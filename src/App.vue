@@ -9,16 +9,29 @@ const usuario = ref({
   estado: '',
   cep: '',
   avatar: '',
-  hobbies: [],
+  hobbies: {
+    esporte: false,
+    leitura: false,
+    viagens: false,
+    musica: false
+  },
   linguagemPreferida: ''
-})
+});
 
+
+const hobbies = ref({
+  esporte: false,
+  leitura: false,
+  viagens: false,
+  musica: false
+})
 
 const mostrarPerfil = ref(false)
 
 function handleFileUpload(e) {
   const target = e.target
   console.log(target)
+  console.log("awdoaiwdhuaiowdhawdiou")
   if (target && target.files) {
     const file = target.files[0]
     usuario.value.avatar = URL.createObjectURL(file)
@@ -27,9 +40,12 @@ function handleFileUpload(e) {
 
 function salvarPerfil() {
   mostrarPerfil.value = true
+
+
+
 }
 function voltar() {
-  mostrarPerfil.value = false 
+  mostrarPerfil.value = false
 }
 
 const estados = [
@@ -61,103 +77,110 @@ const estados = [
   { uf: 'SE', name: 'Sergipe' },
   { uf: 'TO', name: 'Tocantins' }
 ]
+
 </script>
 
 <template>
-<body>
+
+  <body>
     <form v-if="!mostrarPerfil">
-        <div>
-            <label for="txtnome">Nome:</label>
-            <br>
-            <input type="text" name=""  v-model="usuario.nome" id="txtnome">
-        </div>
+      <div>
+        <label for="txtnome">Nome:</label>
         <br>
-        <div>
-            <label for="txtsobrenome">Sobrenome:</label>
-            <br>
-            <input type="text" v-model="usuario.sobrenome" id="txtsobrenome">
-        </div>
+        <input type="text" name="" v-model="usuario.nome" id="txtnome">
+      </div>
+      <br>
+      <div>
+        <label for="txtsobrenome">Sobrenome:</label>
         <br>
-        <div>
-            <label for="txtemail">Email:</label>
-            <br>
-            <input type="email"  v-model="usuario.email" id="txtemail">
-        </div>
+        <input type="text" v-model="usuario.sobrenome" id="txtsobrenome">
+      </div>
+      <br>
+      <div>
+        <label for="txtemail">Email:</label>
         <br>
-        <div>
-            <label for="txtcidade">Cidade:</label>
-            <br>
-            <input type="text" v-model="usuario.cidade" id="txtcidade">
-        </div>
+        <input type="email" v-model="usuario.email" id="txtemail">
+      </div>
+      <br>
+      <div>
+        <label for="txtcidade">Cidade:</label>
         <br>
-        <div>
-          <label for="txtestado">Estado:</label>
-          <br>
-          <select v-model="usuario.estado"name="txtestado" id="txtestado">
-            <option v-for="estado in estados" value="{{ estado.uf }}">{{ estado.name }}</option>
-            
-          </select>
-        </div>
+        <input type="text" v-model="usuario.cidade" id="txtcidade">
+      </div>
+      <br>
+      <div>
+        <label for="txtestado">Estado:</label>
         <br>
-        <div>
-          <label for="cep">CEP:</label>
-          <br>
-          <input v-model="usuario.cep" type="text" id="cep">
-        </div>
-        <br>
-        <div>
-          <label for="avatar">Avatar:</label>
-          <input v-model="usuario.avatar" type="image" id="avatar">
-        </div>
-        <br>
-        <div>
+        <select v-model="usuario.estado" name="txtestado" id="txtestado">
+          <option v-for="estado in estados" value="{{ estado.uf }}">{{ estado.name }}</option>
 
-          <label for="hoob">Hoobies:</label>
-          <br>
-          <input v-model="usuario.hobbies" type="checkbox" class="hoob">
-          <label for="hoob">Esportes</label>
-          
-          <input v-model="usuario.hobbies" type="checkbox" class="hoob"> 
-          <label for="hoob">Musica</label>
-            
-          <input v-model="usuario.hobbies" type="checkbox" class="hoob">
-          <label for="hoob">Viagens</label>
-
-          <input v-model="usuario.hobbies" type="checkbox" class="hoob">
-          <label for="hoob">Leitura</label>          
-          <br>
-          <br> 
-          </div>
-          <div>
-          <label for="linfav">Linguagem favorita:</label>
-          <br>
-          <input v-model="usuario.linguagemFavorita" type="checkbox" class="linfav">
-          <label for="linfav">C</label>
-
-          <input v-model="usuario.linguagemFavorita" type="checkbox" class="linfav">
-          <label for="linfav">Java</label>
-
-          <input v-model="usuario.linguagemFavorita" type="checkbox" class="linfav">
-          <label for="linfav">Python</label>
-
-          <input v-model="usuario.linguagemFavorita" type="checkbox" class="linfav">
-          <label for="linfav">Javascript</label>
-        </div>
+        </select>
+      </div>
+      <br>
+      <div>
+        <label for="cep">CEP:</label>
         <br>
-        <div>
-          <button type="button"  @click="salvarPerfil  ">enviar</button>
-        </div>
+        <input v-model="usuario.cep" type="number" id="cep">
+      </div>
+      <br>
+      <div>
+        <label for="avatar">Avatar:</label>
+        <input v-on:change="handleFileUpload" type="file" accept="image/*" id="avatar">
+        <br>
+        <img style="height: 250px;" :src="usuario.avatar">
+      </div>
+      <br>
+      <div>
+
+        <label for="hoob">Hoobies:</label>
+        <br>
+        <input v-model="usuario.hobbies.esporte" type="checkbox" id="esporte">
+        <label for="esporte">Esportes</label>
+
+        <input v-model="usuario.hobbies.musica" type="checkbox" id="musica">
+        <label for="musica">Música</label>
+
+        <input v-model="usuario.hobbies.viagens" type="checkbox" id="viagens">
+        <label for="viagens">Viagens</label>
+
+        <input v-model="usuario.hobbies.leitura" type="checkbox" id="leitura">
+        <label for="leitura">Leitura</label>
+
+        <br>
+        <br>
+      </div>
+      <div>
+        <label for="linguagem">linguagem:</label>
+        <input v-model="usuario.linguagemFavorita" type="text" id="linguagem">
+      </div>
+
+
+      <div>
+        <button type="button" @click="salvarPerfil">enviar</button>
+      </div>
     </form>
 
     <div v-if="mostrarPerfil">
-
-      <h1>APARECEU</h1>
-      {{ usuario.nome    }}
-      {{ usuario.sobrenome }}
-      <button @click="voltar"></button>
+      <h1>Perfil de {{ usuario.nome }}</h1>
+      <img style="height: 250px;" :src="usuario.avatar">
+      <p>Nome: {{ usuario.nome }}</p>
+      <p>Sobrenome: {{ usuario.sobrenome }}</p>
+      <p>Email: {{ usuario.email }}</p>
+      <p>Cidade: {{ usuario.cidade }}</p>
+      <p>Estado: {{ usuario.estado }}</p>
+      <p>CEP: {{ usuario.cep }}</p>
+      <p>Hobbies:
+        <span v-if="usuario.hobbies.esporte">Esportes </span>
+        <span v-if="usuario.hobbies.musica">Música </span>
+        <span v-if="usuario.hobbies.viagens">Viagens </span>
+        <span v-if="usuario.hobbies.leitura">Leitura </span>
+      </p>
+      <p>Linguagem Preferida: {{ usuario.linguagemFavorita }}</p>
+      <button @click="voltar">Voltar</button>
     </div>
 
-</body>
+
+  </body>
 
 </template>
 
@@ -178,6 +201,3 @@ const estados = [
   opacity: 0;
 }
 </style>
-
-
-
