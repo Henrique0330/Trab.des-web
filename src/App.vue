@@ -15,7 +15,12 @@ const usuario = ref({
     viagens: false,
     musica: false
   },
-  linguagemPreferida: ''
+  linguagem: {
+    java: false,
+    python: false,
+    javascript: false,
+    c: false
+  }
 })
 
 const mostrarPerfil = ref(false)
@@ -64,6 +69,7 @@ const estados = [
   { uf: 'SE', name: 'Sergipe' },
   { uf: 'TO', name: 'Tocantins' }
 ]
+
 </script>
 
 <template>
@@ -74,64 +80,65 @@ const estados = [
           <h1>Spotfy</h1>
         </div>
         <div class="centerN">
-        <label for="txtnome">Nome:</label>
-        <br />
-        <input
-          type="txtnome"
-          name=""
-          v-model="usuario.nome"
-          id="txtnome"
-          placeholder="Insira seu nome"
-        />
-     
-        <br />
-        <br />
-        <div>
-          <label for="txtsobrenome">Sobrenome:</label>
+          <label for="txtnome">Nome:</label>
           <br />
           <input
-            type="text"
+            type="txtnome"
+            required
             name=""
-            v-model="usuario.sobrenome"
-            id="txtsobrenome"
-            placeholder="Insira seu sobrenome"
+            v-model="usuario.nome"
+            id="txtnome" 
+            placeholder="Insira seu nome"
           />
-        </div>
-        <br />
-        <div>
-          <label for="txtemail">Email:</label>
+
           <br />
-          <input
-            type="email"
-            v-model="usuario.email"
-            id="txtemail"
-            placeholder="Insira seu e-mail"
-          />
+          <br />
+          <div>
+            <label for="txtsobrenome">Sobrenome:</label>
+            <br />
+            <input
+              type="text"
+              name=""
+              v-model="usuario.sobrenome"
+              id="txtsobrenome"
+              placeholder="Insira seu sobrenome"
+            />
+          </div>
+          <br />
+          <div>
+            <label for="txtemail">Email:</label>
+            <br />
+            <input
+              type="email"
+              v-model="usuario.email"
+              id="txtemail"
+              placeholder="Insira seu e-mail"
+            />
+          </div>
         </div>
-      </div>
         <br />
         <div class="centerX">
           <label for="txtcidade">Cidade:</label>
           <br />
-          <input type="text" v-model="usuario.cidade" id="txtcidade" />
-        <br>
-        <br />
-        <div>
-          <label for="txtestado">Estado:</label>
+          <input type="text" v-model="usuario.cidade" id="txtcidade" placeholder="Insira sua cidade"/>
           <br />
-          <select v-model="usuario.estado" name="txtestado" id="txtestado">
-            <option v-for="estado of estados" :key="estado.uf" :value="estado.uf">
-              {{ estado.name }}
-            </option>
-          </select>
-        </div>
-        <br />
-        <div>
-          <label for="cep">CEP:</label>
           <br />
-          <input v-model="usuario.cep" type="number" id="cep" />
+          <div>
+            <label for="txtestado">Estado:</label>
+            <br />
+            <select v-model="usuario.estado" name="txtestado" id="txtestado"  >
+              <option v-for="estado of estados" :key="estado.uf" :value="estado.uf">
+                {{ estado.name }}
+              </option>
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="cep">CEP:</label>
+            <br />
+            <input v-model="usuario.cep" type="number" id="cep" />
+          </div>
         </div>
-      </div>
         <br />
         <div>
           <label for="avatar">Avatar:</label>
@@ -160,7 +167,18 @@ const estados = [
         </div>
         <div>
           <label for="linguagem">linguagem:</label>
-          <input v-model="usuario.linguagemFavorita" type="text" id="linguagem" />
+          <br />
+          <input v-model="usuario.linguagem.java" type="checkbox" id="Java" />
+          <label for="esporte">Java</label>
+
+          <input v-model="usuario.linguagem.javascript" type="checkbox" id="JavaScript" />
+          <label for="musica">JavaScript</label>
+
+          <input v-model="usuario.linguagem.python" type="checkbox" id="Python" />
+          <label for="viagens">Python</label>
+
+          <input v-model="usuario.linguagem.C" type="checkbox" id="C" />
+          <label for="leitura">C</label>
         </div>
 
         <div>
@@ -169,25 +187,32 @@ const estados = [
       </div>
     </div>
   </form>
-
-  <div v-if="mostrarPerfil">
-    <h1>Perfil de {{ usuario.nome }}</h1>
-    <img style="height: 250px" :src="usuario.avatar" />
-    <p>Nome: {{ usuario.nome }}</p>
-    <p>Sobrenome: {{ usuario.sobrenome }}</p>
-    <p>Email: {{ usuario.email }}</p>
-    <p>Cidade: {{ usuario.cidade }}</p>
-    <p>Estado: {{ usuario.estado }}</p>
-    <p>CEP: {{ usuario.cep }}</p>
-    <p>
-      Hobbies:
-      <span v-if="usuario.hobbies.esporte">Esportes </span>
-      <span v-if="usuario.hobbies.musica">Música </span>
-      <span v-if="usuario.hobbies.viagens">Viagens </span>
-      <span v-if="usuario.hobbies.leitura">Leitura </span>
+  <div class="resultado">
+    <div v-if="mostrarPerfil">
+      <h1>Perfil de {{ usuario.nome }}</h1>
+      <img style="height: 200px" :src="usuario.avatar" />
+      <p>Nome: {{ usuario.nome }}</p>
+      <p>Sobrenome: {{ usuario.sobrenome }}</p>
+      <p>Email: {{ usuario.email }}</p>
+      <p>Cidade: {{ usuario.cidade }}</p>
+      <p>Estado: {{ usuario.estado }}</p>
+      <p>CEP: {{ usuario.cep }}</p>
+      <p>
+        Hobbies:
+        <span v-if="usuario.hobbies.esporte">Esportes, </span>
+        <span v-if="usuario.hobbies.musica">Música, </span>
+        <span v-if="usuario.hobbies.viagens">Viagens, </span>
+        <span v-if="usuario.hobbies.leitura">Leitura </span>
+      </p>
+      <p>
+      Linguagem:
+      <span v-if="usuario.linguagem.java">Java, </span>
+      <span v-if="usuario.linguagem.javascript">JavaScript, </span>
+      <span v-if="usuario.linguagem.python">Python, </span>
+      <span v-if="usuario.linguagem.c">C</span>
     </p>
-    <p>Linguagem Preferida: {{ usuario.linguagemFavorita }}</p>
-    <button @click="voltar">Voltar</button>
+        <button @click="voltar">Voltar</button>
+    </div>
   </div>
 </template>
 
@@ -214,7 +239,7 @@ const estados = [
 }
 
 .ajustes {
-  color: black;
+  color: rgb(3, 3, 3);
   text-align: center;
 }
 
@@ -227,18 +252,50 @@ body {
 }
 
 .container {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   margin: 200px;
   border-radius: 7px;
+  box-shadow: 1px  white;
 }
 
-.centerN{
-  padding-right: 500px;
- 
+.resultado {
+  background-color: aliceblue;
+  text-align: center;
 }
 
-.centerX{
-  padding-left: 500px;
-  
+button {
+  color: brown;
+  width: 100px;
+  height: 30px;
+}
+
+#txtemail {
+  width: 250px;
+  text-align: center;
+}
+
+#txtnome{
+  width: 250px;
+  text-align: center;
+}
+
+#txtsobrenome{
+  width: 250px;
+  text-align: center;
+}
+
+#txtcidade{
+  width: 250px;
+  text-align: center;
+}
+
+#txtestado{
+  width: 250px;
+  text-align: center;
+}
+
+#cep{
+  width: 250px;
+  text-align: center;
 }
 </style>
